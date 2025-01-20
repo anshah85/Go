@@ -13,9 +13,9 @@ func main() {
 
 	earningsBeforeTax, earningsAfterTax, ratio := calculateProfit(revenue, expenses, taxRate)
 
-	fmt.Println("Earnings before tax: ", earningsBeforeTax)
-	fmt.Println("Earnings After tax(Profit): ", earningsAfterTax)
-	fmt.Println("Ratio: ", ratio)
+	fmt.Printf("Earnings before tax: %0.2f\n", earningsBeforeTax)
+	fmt.Printf("Earnings After tax(Profit): %0.2f\n", earningsAfterTax)
+	fmt.Printf("Ratio: %0.2f\n", ratio)
 }
 
 func calculateProfit(revenue, expenses, taxRate float64) (earningsBeforeTax float64, earningsAfterTax float64, ratio float64) {
