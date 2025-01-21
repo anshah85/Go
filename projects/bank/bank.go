@@ -1,10 +1,29 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
+var fileName = "balance.txt"
+
+func readFromFile() float64 {
+	data, _ := os.ReadFile(fileName)
+	balanceText := string(data)
+	balance, _ := strconv.ParseFloat(balanceText, 64)
+
+	return balance
+
+}
+func writeToFile(accountBalance float64) {
+	balance := fmt.Sprint(accountBalance)
+	os.WriteFile(fileName, []byte(balance), 0644)
+}
 
 func main() {
 
-	accountBalance := 1000.0
+	accountBalance := readFromFile()
 
 	fmt.Println("Welcome to ABSA Bank!")
 
@@ -19,9 +38,10 @@ func main() {
 		fmt.Print("Please enter your choice: ")
 		fmt.Scan(&choice)
 
-		if choice == 1 {
+		switch choice {
+		case 1:
 			fmt.Println("Your account balance is:", accountBalance)
-		} else if choice == 2 {
+		case 2:
 			fmt.Println("Please enter deposit amount: ")
 			var depositAmount float64
 			fmt.Scan(&depositAmount)
@@ -32,11 +52,16 @@ func main() {
 			}
 			accountBalance += depositAmount
 			fmt.Println("Updated account balance: ", accountBalance)
-
-		} else if choice == 3 {
+			writeToFile(accountBalance)
+		case 3:
 			fmt.Println("Please enter withdrawal amount: ")
 			var withdrawalAmount float64
 			fmt.Scan(&withdrawalAmount)
+
+			if withdrawalAmount <= 0 {
+				fmt.Println("Invalid withdrawal amount. Please try again.")
+				continue
+			}
 
 			if withdrawalAmount > accountBalance {
 				fmt.Println("Invalid withdrawal amount. Please try again.")
@@ -45,12 +70,11 @@ func main() {
 
 			accountBalance -= withdrawalAmount
 			fmt.Println("Updated account balance: ", accountBalance)
-		} else {
+			writeToFile(accountBalance)
+		default:
 			fmt.Println("Exit.")
-			break
+			fmt.Println("Thank you for choosing ABSA Bank.")
+			return
 		}
 	}
-
-	fmt.Println("Thank you for choosing ABSA Bank.")
-
 }
